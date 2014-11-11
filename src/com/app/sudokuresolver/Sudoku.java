@@ -2,15 +2,15 @@ package com.app.sudokuresolver;
 
 import java.util.LinkedList;
 
-public class Sudoku {
+public class Sudoku implements Runnable {
 	public static final char empty = '0';
-	public static final int stop = 100;
+	public static final int stop = 10;
 	public static final int sizeBloc = 3;
 	public static final int sizeEdge = 9;
 	public static final int sizeGrid = sizeEdge * sizeEdge;
 	protected LinkedList<String> solution;
 	protected StringBuilder grid;
-	
+
 	/* Constructor */
 	public Sudoku(String rgrid) {
 		solution = new LinkedList<String>();
@@ -69,10 +69,10 @@ public class Sudoku {
 
 	private boolean resolve(int position) {
 		if (position == sizeGrid) {
-			solution.add(toString());
-			if (countSolution() < stop) // stop condition
+			if (countSolution() < stop) {
+				solution.add(toString());
 				return false;
-			else
+			} else
 				return true;
 		}
 
@@ -103,13 +103,13 @@ public class Sudoku {
 	}
 
 	/**/
-	
+
 	public boolean validator() {
 		for (int position = 0; position < sizeGrid; position++) {
 			if (grid.charAt(position) != '0') {
 				char tmp = grid.charAt(position);
 				grid.setCharAt(position, '0');
-				
+
 				if (!check(tmp, position)) {
 					return false;
 				} else {
@@ -121,7 +121,7 @@ public class Sudoku {
 	}
 
 	/**/
-	
+
 	private static int[] ptoc(int position) {
 		int[] c = new int[2];
 		c[0] = position / 9;
@@ -131,5 +131,10 @@ public class Sudoku {
 
 	private static int ctop(int i, int j) {
 		return (i * 9) + (j);
+	}
+
+	@Override
+	public void run() {
+		solve();
 	}
 }

@@ -34,11 +34,12 @@ public class MainActivity extends Activity {
 				Toast.makeText(getBaseContext(), "Loading ...",
 						Toast.LENGTH_SHORT).show();
 
-				Sudoku s = new Sudoku(getGrid());
+				final Sudoku s = new Sudoku(getGrid());
 				if (!s.validator()) {
 					Toast.makeText(getBaseContext(), "Grille invalide",
 							Toast.LENGTH_SHORT).show();
 				} else {
+					// solve grid
 					s.solve();
 					if (s.countSolution() != 0) {
 						setGrid(s.getSolve(0));
